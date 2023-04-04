@@ -9,15 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bbf7192b1e232b4fafbf6c62d8cf3bc, type: 3}
-  m_Name: AttackMiddle
+  m_Script: {fileID: 11500000, guid: ba4948efb85e08e46b6e218c85d5997d, type: 3}
+  m_Name: BlockUp
   m_EditorClassIdentifier: 
   _motion:
     Move: 0
-    Attack: 3
-    Block: 0
+    Attack: 0
+    Block: 2
+    LightBlock: 1
   _blockDirections: 
-  _attackDirection: 3
+  _attackDirection: 0
   _damage: 0
-  _infinityDuration: 0
-  _animationNumer: 2
+  _infinityDuration: 1
+  _hitPrefab: {fileID: 0}
+  _blockDirectionAnimationValue: 3

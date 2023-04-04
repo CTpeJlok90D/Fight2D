@@ -8,14 +8,10 @@ public class Attack : ComboElement
 	public override void OnBegin(ExecuteInfo info)
 	{
 		info.Animator.SetInteger("AttackDirection", _animationNumer);
-		info.Character.DisableControl();
-		Debug.Log("Started");
 	}
 	public override void End(ExecuteInfo info)
 	{
 		info.Animator.SetInteger("AttackDirection", 0);
-		info.Character.EnableControl();
-		Debug.Log("Stoped");
 	}
 
 }

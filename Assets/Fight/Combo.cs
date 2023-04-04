@@ -14,6 +14,8 @@ public class Combo : MonoBehaviour
 	private Coroutine _coroutine;
 	private ComboElement _currentComboElement;
 
+	public ComboElement CurrentComboElement => _currentComboElement;
+
 	public ExecuteInfo ExecuteInfo => new()
 	{
 		CharacterRigidbody = _characterRigidbody,
@@ -24,7 +26,6 @@ public class Combo : MonoBehaviour
 	public void Begin()
 	{
 		_coroutine = StartCoroutine(BeginComboTimerCorutine());
-
 	}
 
 	public void Stop()
@@ -43,12 +44,12 @@ public class Combo : MonoBehaviour
 		_currentComboElement?.OnBegin(ExecuteInfo);
 		while (_timer < _combatElementByTime.Keys[^1].MaxAcceptebleTime)
 		{
-			if (_currentComboElement == null || _lastMotion != _currentComboElement.Motion)
+            if (_currentComboElement == null || _lastMotion != _currentComboElement.Motion)
 			{
 				break;
 			}
 
-			_currentComboElement.Execute(ExecuteInfo);
+            _currentComboElement.Execute(ExecuteInfo);
 
 			if (_currentComboElement.InfinityDuration == false)
 			{
