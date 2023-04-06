@@ -7,6 +7,6 @@ public class Bot : CharacterController2D
 
     private void Update()
     {
-        ApplyMotion(_currentMotion, Time.deltaTime);
+        SendApplyMotion(_currentMotion, Time.deltaTime);
     }
 }

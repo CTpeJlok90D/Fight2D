@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -6,10 +7,11 @@ public class Hit : MonoBehaviour
 {
     [SerializeField] private float _liveTime;
     [SerializeField] private Direction _blockDirection;
-    [SerializeField] private Motion _parryMotion;
+    [SerializeField] private Motion _deflectMotion;
     [SerializeField] private float _deflectTime;
     [SerializeField] private bool _isUnblockable;
     [SerializeField] private bool _isDeflectable;
+    [SerializeField] private bool _isBlockingByLightBlock;
     [SerializeField] UnityDictionary<ReactionType, StunTimes> _stunTimesByReaction;
 
     private CharacterController2D _sender;
@@ -19,10 +21,14 @@ public class Hit : MonoBehaviour
     public CharacterController2D Sender => _sender;
     public Collider2D Collider => _collider;
     public Direction BlockDirection => _blockDirection;
-    public Motion ParryMotion => _parryMotion;
+    public Motion ParryMotion => _deflectMotion;
     public float DeflectTime => _deflectTime;
+    public bool IsUnblockable => _isUnblockable;
+    public bool IsDeflectable => _isDeflectable;
+    public bool IsBlockingByLightBlock => _isBlockingByLightBlock;
 
-    public void Block(CharacterController2D blocker, Health blockerHealth)
+
+	public void Block(CharacterController2D blocker, Health blockerHealth)
     {
         if (_isUnblockable == false)
         {
@@ -43,23 +49,25 @@ public class Hit : MonoBehaviour
     public void DirectHit(CharacterController2D deflector, Health deflectorHealth)
     {
         ApplyHit(ReactionType.None, deflector, deflectorHealth);
-    }
+	}
 
     private void ApplyHit(ReactionType type, CharacterController2D deflector, Health deflectorHealth)
     {
-        deflector.GiveStun(_stunTimesByReaction[type].RecipientStunTime);
+		deflector.GiveStun(_stunTimesByReaction[type].RecipientStunTime);
+        _sender.GiveStun(_stunTimesByReaction[type].SenderStunTime);
         deflectorHealth.Current -= _stunTimesByReaction[type].RecipientDamage;
-    }
+	}
 
-    private void Awake()
+	private void Awake()
     {
         _collider = GetComponent<Collider2D>();
         _collider.isTrigger = true;
     }
 
-    public void Init(CharacterController2D sender)
+    public Hit Init(CharacterController2D sender)
     {
         _sender = sender;
+        return this;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -77,7 +85,7 @@ public class Hit : MonoBehaviour
             }
 
             part.HitHandler.HandleHit(this);
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -108,7 +116,8 @@ public class Hit : MonoBehaviour
     [Serializable]
     private struct StunTimes
     {
-        public float RecipientDamage;
+        public int RecipientDamage;
         public float RecipientStunTime;
+        public float SenderStunTime;
     }
 }

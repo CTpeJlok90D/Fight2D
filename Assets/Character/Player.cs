@@ -1,10 +1,10 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : CharacterController2D
 {
 	private Actions _actions;
+	private bool _lightBlock;
 
 	public Vector2 MoveInput => _actions.Fight.Move.ReadValue<Vector2>();
 	public Vector2 AttackInput => _actions.Fight.Attack.ReadValue<Vector2>();
@@ -15,29 +15,48 @@ public class Player : CharacterController2D
 		Attack = DirectionByVector2(AttackInput),
 		Move = DirectionByVector2(MoveInput),
 		Block = DirectionByVector2(Block),
-		LightBlock = LightBlock
-    };
+		LightBlock = _lightBlock
+	};
 
-	private bool LightBlock;
+	protected void Update()
+	{
+		if (IsClient && IsLocalPlayer)
+		{
+			SendApplyMotion(CurrentMotionInput, Time.deltaTime);
+		}
+	}
 
-    private void Awake()
+	protected void Awake()
 	{
 		_actions = new Actions();
 		_actions.Fight.Move.Enable();
 		_actions.Fight.Attack.Enable();
 		_actions.Fight.SwitchStance.Enable();
+		_actions.Fight.RotateSelf.Enable();
 	}
-    private void OnEnable()
+    protected new void OnEnable()
     {
+		base.OnEnable();
 		_actions.Fight.SwitchStance.started += EnableBlockStance;
 		_actions.Fight.SwitchStance.canceled += DisableBlockStance;
-    }
+		_actions.Fight.RotateSelf.started += RotateSelf;
+	}
 
-    private void OnDisable()
+    protected new void OnDisable()
     {
+		base.OnDisable();
         _actions.Fight.SwitchStance.started -= EnableBlockStance;
         _actions.Fight.SwitchStance.canceled -= DisableBlockStance;
-    }
+		_actions.Fight.RotateSelf.started -= RotateSelf;
+	}
+
+	private void RotateSelf(InputAction.CallbackContext context)
+	{
+		if (IsClient && IsLocalPlayer)
+		{
+			RotateSelf();
+		}
+	}
 
     private void EnableBlockStance(InputAction.CallbackContext context)
 	{
@@ -53,7 +72,7 @@ public class Player : CharacterController2D
 
     private void EnableBlockStance()
     {
-		LightBlock = true;
+		_lightBlock = true;
 
         _actions.Fight.Attack.Disable();
 		_actions.Fight.Block.Enable();
@@ -61,20 +80,14 @@ public class Player : CharacterController2D
 
     private void DisableBlockStance()
 	{
-        LightBlock = false;
+        _lightBlock = false;
 
         _actions.Fight.Attack.Enable();
         _actions.Fight.Block.Disable();
     }
 
-    protected void Update()
-	{
-		ApplyMotion(CurrentMotionInput, Time.deltaTime);
-	}
-
 	public Direction DirectionByVector2(Vector2 vector)
 	{
-		// TODO: Придумать алгорим получше...
 		if (vector == Vector2.zero)
 		{
 			return Direction.None;

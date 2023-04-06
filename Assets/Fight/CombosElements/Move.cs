@@ -16,11 +16,13 @@ public class Move : ComboElement
 
 	public override void End(ExecuteInfo info)
 	{
+		base.End(info);
 		info.Animator.SetInteger("MoveDirection", 0);
 	}
 
-	public override void OnBegin(ExecuteInfo info) 
+	public override void Begin(ExecuteInfo info) 
 	{
+		base.Begin(info);
 		info.Animator.SetInteger("MoveDirection", _moveDirection);
 	}
 

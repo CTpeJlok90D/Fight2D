@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# UNT0006: Incorrect message signature
+dotnet_diagnostic.UNT0006.severity = silent
+
+# UNT0033: Incorrect message case
+dotnet_diagnostic.UNT0033.severity = silent

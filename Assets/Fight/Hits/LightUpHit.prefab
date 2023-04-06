@@ -103,28 +103,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _liveTime: 0.2
   _blockDirection: 2
-  _parryMotion:
+  _deflectMotion:
     Move: 0
     Attack: 1
     Block: 0
     LightBlock: 0
   _deflectTime: 0.07
   _isUnblockable: 0
-  _isDeflectable: 0
+  _isDeflectable: 1
+  _isBlockingByLightBlock: 1
   _stunTimesByReaction:
     _values:
     - Name: 
       Key: 0
       Value:
-        RecipientDamage: 33
-        RecipientStunTime: 0.1
+        RecipientDamage: 24
+        RecipientStunTime: 0.15
+        SenderStunTime: 0.1
     - Name: 
       Key: 1
       Value:
         RecipientDamage: 0
         RecipientStunTime: 0.1
+        SenderStunTime: 0.1
     - Name: 
       Key: 2
       Value:
         RecipientDamage: 0
         RecipientStunTime: 0.1
+        SenderStunTime: 0.6

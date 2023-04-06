@@ -16,9 +16,11 @@ MonoBehaviour:
     Move: 0
     Attack: 2
     Block: 0
+    LightBlock: 0
   _blockDirections: 02000000
   _attackDirection: 2
   _damage: 0
   _infinityDuration: 0
   _hitPrefab: {fileID: 125089323028640499, guid: 6650b076fd72d404a97938c87c4b7036, type: 3}
+  _timeToHit: 0.36
   _animationNumer: 3

@@ -22,4 +22,5 @@ MonoBehaviour:
   _damage: 0
   _infinityDuration: 0
   _hitPrefab: {fileID: 2225823776322621559, guid: e33f108b3fd5b5d45853b3eaa7f239e7, type: 3}
+  _timeToHit: 0.3
   _animationNumer: 2

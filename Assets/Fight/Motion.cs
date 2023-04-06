@@ -1,7 +1,8 @@
 ﻿using System;
+using Unity.Netcode;
 
 [Serializable]
-public struct Motion
+public struct Motion : INetworkSerializable
 {
 	public Direction Move;
 	public Direction Attack;
@@ -20,6 +21,14 @@ public struct Motion
 	public override int GetHashCode()
 	{
 		return HashCode.Combine(Move, Attack, Block);
+	}
+
+	public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+	{
+		serializer.SerializeValue(ref Move);
+		serializer.SerializeValue(ref Attack);
+		serializer.SerializeValue(ref Block);
+		serializer.SerializeValue(ref LightBlock);
 	}
 
 	public static bool operator == (Motion a, Motion b)

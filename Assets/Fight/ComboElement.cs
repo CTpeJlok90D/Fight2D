@@ -1,23 +1,33 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class ComboElement : ScriptableObject
 {
 	[Header(nameof(ComboElement))]
 	[SerializeField] private Motion _motion;
-	[SerializeField] private Direction[] _blockDirections;
-	[SerializeField] private Direction _attackDirection;
-	[SerializeField] private int _damage;
 	[SerializeField] private bool _infinityDuration;
 	[SerializeField] private Hit _hitPrefab;
+	[SerializeField] private float _timeToHit;
+
+	private UnityEvent _begun = new();
+	private UnityEvent _endned = new();
 
 	public Motion Motion => _motion;
-	public Direction[] BlockDirections => _blockDirections;
-	public Direction AttackDirection => _attackDirection;
-	public int Damage => _damage;
 	public bool InfinityDuration => _infinityDuration;
-	public Hit Hit => _hitPrefab;
+	public float TimeToHit => _timeToHit;
 
-	public virtual void Execute(ExecuteInfo info) { }
-	public virtual void OnBegin(ExecuteInfo info) { }
-	public virtual void End(ExecuteInfo info) { }
+	public virtual void Execute(ExecuteInfo info) 
+	{
+		
+	}
+	public virtual void Begin(ExecuteInfo info) 
+	{
+		info.HitSpawner.SpawnIn(_timeToHit, _hitPrefab, _endned);
+		_begun.Invoke();
+	}
+	public virtual void End(ExecuteInfo info) 
+	{
+		_endned.Invoke();
+	}
 }

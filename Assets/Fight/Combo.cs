@@ -8,19 +8,25 @@ public class Combo : MonoBehaviour
 	[SerializeField] private Rigidbody2D _characterRigidbody;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private CharacterController2D _character;
+	[SerializeField] private HitSpawner _hitSpawner;
+	[SerializeField] private bool _mustBeCanceledByLightBlock;
 
-	[SerializeField] private float _timer = 0;
+	private float _timer = 0;
 	private Motion _lastMotion;
 	private Coroutine _coroutine;
 	private ComboElement _currentComboElement;
+	private bool _comboElementIsLaunched = false;
 
 	public ComboElement CurrentComboElement => _currentComboElement;
+	public bool IsLaunched => _coroutine != null;
+	public bool MustBeCanceledByLightBlock => _mustBeCanceledByLightBlock;
 
 	public ExecuteInfo ExecuteInfo => new()
 	{
 		CharacterRigidbody = _characterRigidbody,
 		Animator = _animator,
 		Character = _character,
+		HitSpawner = _hitSpawner
 	};
 
 	public void Begin()
@@ -34,17 +40,23 @@ public class Combo : MonoBehaviour
 		{
 			StopCoroutine(_coroutine);
 		}
-		_currentComboElement?.End(ExecuteInfo);
+		_coroutine = null;
+		if (_comboElementIsLaunched == true)
+		{
+			_currentComboElement?.End(ExecuteInfo);
+			_comboElementIsLaunched = false;
+		}
 	}
 
 	private IEnumerator BeginComboTimerCorutine()
 	{
 		_timer = 0;
 		_currentComboElement = FindComboElementByTyme(_timer);
-		_currentComboElement?.OnBegin(ExecuteInfo);
+		_currentComboElement?.Begin(ExecuteInfo);
+		_comboElementIsLaunched = true;
 		while (_timer < _combatElementByTime.Keys[^1].MaxAcceptebleTime)
 		{
-            if (_currentComboElement == null || _lastMotion != _currentComboElement.Motion)
+            if (_currentComboElement == null)
 			{
 				break;
 			}
@@ -56,10 +68,16 @@ public class Combo : MonoBehaviour
 				_timer += Time.deltaTime;
 			}
 			ComboElement newComboElement = FindComboElementByTyme(_timer);
-			if (newComboElement == null || newComboElement != _currentComboElement)
+			if ((newComboElement == null || newComboElement != _currentComboElement) && _comboElementIsLaunched)
 			{
 				_currentComboElement?.End(ExecuteInfo);
+				_comboElementIsLaunched = false;
+			}
+			if (newComboElement != null && _lastMotion == newComboElement.Motion && _comboElementIsLaunched == false)
+			{
 				_currentComboElement = newComboElement;
+				_currentComboElement?.Begin(ExecuteInfo);
+				_comboElementIsLaunched = true;
 			}
 			yield return null;
 		}

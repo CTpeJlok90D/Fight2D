@@ -62,6 +62,15 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateSelf"",
+                    ""type"": ""Button"",
+                    ""id"": ""40429ee9-6e72-419a-97e9-9e2810e93310"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -284,6 +293,28 @@ public partial class @Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4c55360-8532-4bf3-ab3a-41f28fb1cff7"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateSelf"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e73579f-0fed-46d7-8328-4b0adbf05a47"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateSelf"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -296,6 +327,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         m_Fight_Attack = m_Fight.FindAction("Attack", throwIfNotFound: true);
         m_Fight_Block = m_Fight.FindAction("Block", throwIfNotFound: true);
         m_Fight_SwitchStance = m_Fight.FindAction("SwitchStance", throwIfNotFound: true);
+        m_Fight_RotateSelf = m_Fight.FindAction("RotateSelf", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -361,6 +393,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Fight_Attack;
     private readonly InputAction m_Fight_Block;
     private readonly InputAction m_Fight_SwitchStance;
+    private readonly InputAction m_Fight_RotateSelf;
     public struct FightActions
     {
         private @Actions m_Wrapper;
@@ -369,6 +402,7 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         public InputAction @Attack => m_Wrapper.m_Fight_Attack;
         public InputAction @Block => m_Wrapper.m_Fight_Block;
         public InputAction @SwitchStance => m_Wrapper.m_Fight_SwitchStance;
+        public InputAction @RotateSelf => m_Wrapper.m_Fight_RotateSelf;
         public InputActionMap Get() { return m_Wrapper.m_Fight; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -390,6 +424,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @SwitchStance.started += instance.OnSwitchStance;
             @SwitchStance.performed += instance.OnSwitchStance;
             @SwitchStance.canceled += instance.OnSwitchStance;
+            @RotateSelf.started += instance.OnRotateSelf;
+            @RotateSelf.performed += instance.OnRotateSelf;
+            @RotateSelf.canceled += instance.OnRotateSelf;
         }
 
         private void UnregisterCallbacks(IFightActions instance)
@@ -406,6 +443,9 @@ public partial class @Actions: IInputActionCollection2, IDisposable
             @SwitchStance.started -= instance.OnSwitchStance;
             @SwitchStance.performed -= instance.OnSwitchStance;
             @SwitchStance.canceled -= instance.OnSwitchStance;
+            @RotateSelf.started -= instance.OnRotateSelf;
+            @RotateSelf.performed -= instance.OnRotateSelf;
+            @RotateSelf.canceled -= instance.OnRotateSelf;
         }
 
         public void RemoveCallbacks(IFightActions instance)
@@ -429,5 +469,6 @@ public partial class @Actions: IInputActionCollection2, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnBlock(InputAction.CallbackContext context);
         void OnSwitchStance(InputAction.CallbackContext context);
+        void OnRotateSelf(InputAction.CallbackContext context);
     }
 }

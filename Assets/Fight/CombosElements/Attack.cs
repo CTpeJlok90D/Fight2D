@@ -5,13 +5,15 @@ public class Attack : ComboElement
 {
 	[Header(nameof(Attack))]
 	[SerializeField] private int _animationNumer = 0;
-	public override void OnBegin(ExecuteInfo info)
+	public override void Begin(ExecuteInfo info)
 	{
-		info.Animator.SetInteger("AttackDirection", _animationNumer);
+		base.Begin(info);
+		info.Animator.SetInteger("AttackIndex", _animationNumer);
 	}
 	public override void End(ExecuteInfo info)
 	{
-		info.Animator.SetInteger("AttackDirection", 0);
+		base.End(info);
+		info.Animator.SetInteger("AttackIndex", 0);
 	}
 
 }
