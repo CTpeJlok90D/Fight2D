@@ -1,5 +1,7 @@
+using System;
 using TMPro;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,11 +12,22 @@ public class ConnectPanel : MonoBehaviour
 	[SerializeField] private TMP_InputField _ipField;
 	[SerializeField] private TMP_InputField _portField;
 	[SerializeField] private GameObject _disconnectPanel;
+	[SerializeField] private UnityTransport _transport;
 
-	protected void OnEnable()
+	private ushort _oldPort = 7777;
+
+    private void Awake()
+    {
+		_ipField.text = _transport.ConnectionData.Address;
+        _portField.text = _transport.ConnectionData.Port.ToString();
+    }
+
+    protected void OnEnable()
 	{
 		_connectButton.onClick.AddListener(OnConnectClick);
 		_hostButton.onClick.AddListener(OnHostClick);
+		_ipField.onEndEdit.AddListener(OnIpFieldEndEdit);
+        _portField.onEndEdit.AddListener(OnPortFieldEdit);
 		NetworkManager.Singleton.OnClientConnectedCallback += OnConnectedToServer;
 	}
 
@@ -22,13 +35,37 @@ public class ConnectPanel : MonoBehaviour
 	{
 		_connectButton.onClick.RemoveListener(OnConnectClick);
 		_hostButton.onClick.RemoveListener(OnHostClick);
-		if (NetworkManager.Singleton != null)
+        _ipField.onEndEdit.RemoveListener(OnIpFieldEndEdit);
+        _portField.onEndEdit.RemoveListener(OnPortFieldEdit);
+        if (NetworkManager.Singleton != null)
 		{
 			NetworkManager.Singleton.OnClientConnectedCallback -= OnConnectedToServer;
 		}
 	}
 
-	protected void OnConnectedToServer(ulong id)
+
+	private void OnIpFieldEndEdit(string newValue)
+	{
+        _transport.ConnectionData.Address = newValue;
+
+    }
+
+	private void OnPortFieldEdit(string newValue)
+	{
+		ushort port;
+        try
+		{
+            port = Convert.ToUInt16(newValue);
+            _oldPort = port;
+        }
+		catch
+		{
+            _portField.text = _oldPort.ToString();
+        }
+        _transport.ConnectionData.Port = _oldPort;
+    }
+
+	private void OnConnectedToServer(ulong id)
 	{
 		if (id == NetworkManager.Singleton.LocalClientId)
 		{

@@ -243,7 +243,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954638677305399785}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.00000004371139, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
@@ -697,6 +697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sender: {fileID: 75978396261990377}
+  _instance: {fileID: 0}
 --- !u!95 &6868263282840298264
 Animator:
   serializedVersion: 5
@@ -860,7 +861,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TransitionStateInfoList: []
+  TransitionStateInfoList:
+  - Layer: 0
+    OriginatingState: -1638907116
+    DestinationState: -755535501
+    TransitionDuration: 0.25
+    TriggerNameHash: 367579676
+    TransitionIndex: 0
+  - Layer: 0
+    OriginatingState: -210420986
+    DestinationState: -186804853
+    TransitionDuration: 0.25
+    TriggerNameHash: 367579676
+    TransitionIndex: 0
+  - Layer: 0
+    OriginatingState: 1666931604
+    DestinationState: -99054491
+    TransitionDuration: 0.25
+    TriggerNameHash: 367579676
+    TransitionIndex: 0
   m_Animator: {fileID: 6868263282840298264}
 --- !u!1 &3400839873309283577
 GameObject:

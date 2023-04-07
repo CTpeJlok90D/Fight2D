@@ -2660,6 +2660,7 @@ MonoBehaviour:
   _ipField: {fileID: 1381299179}
   _portField: {fileID: 636072221}
   _disconnectPanel: {fileID: 1367787408}
+  _transport: {fileID: 990782335}
 --- !u!1 &1363739060
 GameObject:
   m_ObjectHideFlags: 0

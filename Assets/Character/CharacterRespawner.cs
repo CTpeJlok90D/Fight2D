@@ -8,26 +8,13 @@ public class CharacterRespawner : MonoBehaviour
 
 	public void Respawn()
 	{
-		LocalRespawn();
 		RespawnServerRpc();
 	}
 
 	[ServerRpc]
 	private void RespawnServerRpc()
 	{
-		LocalRespawn();
-		RespawnClientRpc();
-	}
-
-	[ClientRpc]
-	private void RespawnClientRpc()
-	{
-		LocalRespawn();
-	}
-
-	private void LocalRespawn()
-	{
-		NetworkManager.Singleton.Shutdown();
-		NetworkManager.Singleton.StartClient();
+		_character.EnableControl();
+		_health.Current = _health.Max;
 	}
 }
