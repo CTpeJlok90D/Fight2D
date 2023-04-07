@@ -4,7 +4,7 @@ using UnityEngine;
 public class CharacterRespawner : MonoBehaviour
 {
 	[SerializeField] private CharacterController2D _character;
-	[SerializeField] private Health _health;
+	[SerializeField] private Character—haracteristic _health;
 
 	public void Respawn()
 	{

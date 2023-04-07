@@ -6,8 +6,8 @@ using UnityEngine.Events;
 public class HitSpawner : NetworkBehaviour
 {
 	[SerializeField] private CharacterController2D _sender;
-
-	[SerializeField] private Hit _instance;
+	[SerializeField] private Stamina _stamina;
+	private Hit _instance;
 
 	private Coroutine _spawnCoroutine;
 	private UnityEvent _stopEvent;
@@ -32,7 +32,7 @@ public class HitSpawner : NetworkBehaviour
 
 		if (hitPrefub != null && _instance == null)
 		{
-			_instance = Instantiate(hitPrefub, transform).Init(_sender);
+			_instance = Instantiate(hitPrefub, transform).Init(_sender, _stamina);
 		}
 	}
 

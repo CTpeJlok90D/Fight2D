@@ -112,23 +112,29 @@ MonoBehaviour:
   _isUnblockable: 0
   _isDeflectable: 1
   _isBlockingByLightBlock: 1
-  _stunTimesByReaction:
+  _hitResult:
     _values:
     - Name: 
       Key: 0
       Value:
         RecipientDamage: 24
-        RecipientStunTime: 0.15
+        RecipientStunTime: 0.1
         SenderStunTime: 0.1
+        RecipientStuminaDamage: 30
+        SenderStaminaDamage: 0
     - Name: 
       Key: 1
       Value:
         RecipientDamage: 0
         RecipientStunTime: 0.1
         SenderStunTime: 0.1
+        RecipientStuminaDamage: 18
+        SenderStaminaDamage: 0
     - Name: 
       Key: 2
       Value:
         RecipientDamage: 0
         RecipientStunTime: 0.1
         SenderStunTime: 0.6
+        RecipientStuminaDamage: 0
+        SenderStaminaDamage: 50

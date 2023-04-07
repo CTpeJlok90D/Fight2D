@@ -20,4 +20,6 @@ MonoBehaviour:
   _infinityDuration: 0
   _hitPrefab: {fileID: 125089323028640499, guid: 6fd14e9d21d27834e80056de8d1686a5, type: 3}
   _timeToHit: 0.55
+  _recoverStaminaWhileExecute: 0
+  _staminaToUse: 45
   _animationNumer: 4

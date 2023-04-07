@@ -6,4 +6,5 @@ public struct ExecuteInfo
 	public Animator Animator;
 	public CharacterController2D Character;
 	public HitSpawner HitSpawner;
+	public Stamina Stamina;
 }

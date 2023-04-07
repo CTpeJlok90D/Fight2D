@@ -5,20 +5,20 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private CharacterController2D _character;
 	[SerializeField] private HitHandler _hitHandler;
-	[SerializeField] private Health _health;
+	[SerializeField] private Character—haracteristic _health;
 
 	private void OnEnable()
 	{
 		_hitHandler.Deflected.AddListener(OnBlocked);
 		_hitHandler.Blocked.AddListener(OnBlocked);
-		_health.HeatlhUpdated.AddListener(OnHealthChange);
+		_health.ValueUpdated.AddListener(OnHealthChange);
 	}
 
 	private void OnDisable()
 	{
 		_hitHandler.Deflected.RemoveListener(OnBlocked);
 		_hitHandler.Blocked.RemoveListener(OnBlocked);
-		_health.HeatlhUpdated.RemoveListener(OnHealthChange);
+		_health.ValueUpdated.RemoveListener(OnHealthChange);
 	}
 
 	private void OnHealthChange(int newValue)

@@ -1,13 +1,20 @@
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class HitHandler : MonoBehaviour
 {
     [SerializeField] private CharacterController2D _character;
-    [SerializeField] private Health _health;
+    [SerializeField] private CharacterÑharacteristic _health;
+    [SerializeField] private Stamina _stamina;
     [SerializeField] private UnityEvent _blocked;
     [SerializeField] private UnityEvent _deflected;
+
+    public CharacterInfo CharacterInfo => new()
+    {
+        Character = _character,
+        Health = _health,
+        Stamina = _stamina,
+    };
 
     public UnityEvent Blocked => _blocked;
     public UnityEvent Deflected => _deflected;
@@ -16,24 +23,24 @@ public class HitHandler : MonoBehaviour
     {
 		if (_character.ControlDisabled)
         {
-            hit.DirectHit(_character, _health);
+            hit.DirectHit(CharacterInfo);
             return;
         }
 
         if (_character.LastMotion == hit.ParryMotion && _character.LastMotionAge < hit.DeflectTime)
         {
-            hit.Deflect(_character, _health);
+            hit.Deflect(CharacterInfo);
             _deflected.Invoke();
 			return;
         }
 
         if (_character.LastMotion.Block == hit.BlockDirection || (hit.IsBlockingByLightBlock && _character.LastMotion.LightBlock && _character.LastMotion.Block == Direction.None))
         {
-            hit.Block(_character, _health);
+            hit.Block(CharacterInfo);
             _blocked.Invoke();
 			return;
         }
 
-        hit.DirectHit(_character, _health);
+        hit.DirectHit(CharacterInfo);
     }
 }

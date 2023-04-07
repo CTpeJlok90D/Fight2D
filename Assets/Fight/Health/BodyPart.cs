@@ -5,7 +5,7 @@ public class BodyPart : MonoBehaviour
 {
     [SerializeField] private CharacterController2D _owner;
     [SerializeField] private HitHandler _hitHandler;
-    [SerializeField] private Health _health;
+    [SerializeField] private CharacterÑharacteristicUI _health;
     private Collider2D _collider;
 
     public CharacterController2D Owner => _owner;

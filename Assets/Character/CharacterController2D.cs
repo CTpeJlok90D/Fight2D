@@ -9,7 +9,7 @@ public class CharacterController2D : NetworkBehaviour
 	[SerializeField] private Rigidbody2D _rigidbody2D;
 	[SerializeField] private List<Combo> _acceptebleCombos = new();
 	[SerializeField] private LookDirection _lookDirection = LookDirection.Left;
-	[SerializeField] private Health _health;
+	[SerializeField] private CharacterСharacteristic _health;
 	[SerializeField] private bool _controlDisabled = false;
 
 	private Combo _currentCombo;
@@ -41,16 +41,16 @@ public class CharacterController2D : NetworkBehaviour
 
 	protected void OnEnable()
 	{
-		_health?.Death.AddListener(OnDeath);
+		_health?.Out.AddListener(OnDeath);
 		if (_health == null)
 		{
-			Debug.LogWarning($"{nameof(Health)} component is empty. Character will not take damage and can't die");
+			Debug.LogWarning($"{nameof(CharacterСharacteristicUI)} component is empty. Character will not take damage and can't die");
 		}
 	}
 
 	protected void OnDisable()
 	{
-		_health?.Death.RemoveListener(OnDeath);
+		_health?.Out.RemoveListener(OnDeath);
 	}
 
 
@@ -140,7 +140,7 @@ public class CharacterController2D : NetworkBehaviour
 		}
 
 		Combo combo = FindAcceptebleCombo(_lastMotion);
-		if (_currentCombo == null || (combo != _currentCombo && _currentCombo.MustBeCanceledByLightBlock == false))
+        if (_currentCombo == null || (combo != _currentCombo && _currentCombo.MustBeCanceledByLightBlock == false))
 		{
 			_currentCombo?.Stop();
 			_currentCombo = combo;

@@ -1,5 +1,4 @@
 using System;
-using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -12,9 +11,10 @@ public class Hit : MonoBehaviour
     [SerializeField] private bool _isUnblockable;
     [SerializeField] private bool _isDeflectable;
     [SerializeField] private bool _isBlockingByLightBlock;
-    [SerializeField] UnityDictionary<ReactionType, StunTimes> _stunTimesByReaction;
+    [SerializeField] UnityDictionary<ReactionType, HitResult> _hitResult;
 
     private CharacterController2D _sender;
+    private Stamina _senderStamina;
     private CharacterController2D _target;
     private Collider2D _collider;
 
@@ -28,35 +28,37 @@ public class Hit : MonoBehaviour
     public bool IsBlockingByLightBlock => _isBlockingByLightBlock;
 
 
-	public void Block(CharacterController2D blocker, Health blockerHealth)
+	public void Block(CharacterInfo info)
     {
         if (_isUnblockable == false)
         {
             return;
         }
-        ApplyHit(ReactionType.Block, blocker, blockerHealth);
+        ApplyHit(ReactionType.Block, info);
     }
 
-    public void Deflect(CharacterController2D deflector, Health deflectorHealth)
+    public void Deflect(CharacterInfo info)
     {
         if (_isDeflectable == false)
         {
             return;
         }
-        ApplyHit(ReactionType.Deflect, deflector, deflectorHealth);
+        ApplyHit(ReactionType.Deflect, info);
     }
 
-    public void DirectHit(CharacterController2D deflector, Health deflectorHealth)
+    public void DirectHit(CharacterInfo info)
     {
-        ApplyHit(ReactionType.None, deflector, deflectorHealth);
+        ApplyHit(ReactionType.None, info);
 	}
 
-    private void ApplyHit(ReactionType type, CharacterController2D deflector, Health deflectorHealth)
+    private void ApplyHit(ReactionType type, CharacterInfo info)
     {
-		deflector.GiveStun(_stunTimesByReaction[type].RecipientStunTime);
-        _sender.GiveStun(_stunTimesByReaction[type].SenderStunTime);
-        deflectorHealth.Current -= _stunTimesByReaction[type].RecipientDamage;
-	}
+        info.Character.GiveStun(_hitResult[type].RecipientStunTime);
+        _sender.GiveStun(_hitResult[type].SenderStunTime);
+        info.Health.Current -= _hitResult[type].RecipientDamage;
+        info.Stamina.Current -= _hitResult[type].RecipientStuminaDamage;
+        _senderStamina.Current -= _hitResult[type].SenderStaminaDamage;
+    }
 
 	private void Awake()
     {
@@ -64,9 +66,10 @@ public class Hit : MonoBehaviour
         _collider.isTrigger = true;
     }
 
-    public Hit Init(CharacterController2D sender)
+    public Hit Init(CharacterController2D sender, Stamina senderStamina)
     {
         _sender = sender;
+        _senderStamina = senderStamina;
         return this;
     }
 
@@ -85,6 +88,7 @@ public class Hit : MonoBehaviour
             }
 
             part.HitHandler.HandleHit(this);
+
             Destroy(gameObject);
         }
     }
@@ -114,10 +118,12 @@ public class Hit : MonoBehaviour
     }
 
     [Serializable]
-    private struct StunTimes
+    private struct HitResult
     {
         public int RecipientDamage;
         public float RecipientStunTime;
         public float SenderStunTime;
+        public int RecipientStuminaDamage;
+        public int SenderStaminaDamage;
     }
 }

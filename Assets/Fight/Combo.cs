@@ -8,6 +8,7 @@ public class Combo : MonoBehaviour
 	[SerializeField] private Rigidbody2D _characterRigidbody;
 	[SerializeField] private Animator _animator;
 	[SerializeField] private CharacterController2D _character;
+	[SerializeField] private Stamina _stamina;
 	[SerializeField] private HitSpawner _hitSpawner;
 	[SerializeField] private bool _mustBeCanceledByLightBlock;
 
@@ -26,8 +27,9 @@ public class Combo : MonoBehaviour
 		CharacterRigidbody = _characterRigidbody,
 		Animator = _animator,
 		Character = _character,
-		HitSpawner = _hitSpawner
-	};
+		HitSpawner = _hitSpawner,
+		Stamina = _stamina
+    };
 
 	public void Begin()
 	{
