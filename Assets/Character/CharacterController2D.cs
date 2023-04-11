@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 public class CharacterController2D : NetworkBehaviour
@@ -86,7 +87,7 @@ public class CharacterController2D : NetworkBehaviour
 		_controlDisabled = false;
 	}
 
-	public void SendApplyMotion(Motion motion, float deltaTime)
+    public void SendApplyMotion(Motion motion, float deltaTime)
 	{
 		ApplyMotion(motion, deltaTime);
 		ApplyMotionServerRpc(motion, deltaTime);
@@ -96,14 +97,14 @@ public class CharacterController2D : NetworkBehaviour
 	private void ApplyMotionServerRpc(Motion motion, float deltaTime) 
 	{
 		ApplyMotion(motion, deltaTime);
-		//ApplyMotionClientRPC(motion, deltaTime);
-    }
+		ApplyMotionClientRPC(motion, deltaTime);
+	}
 
-	//[ClientRpc]
-	//private void ApplyMotionClientRPC(Motion motion, float deltaTime)
-	//{
-	//	ApplyMotion(motion, deltaTime);
-	//}
+	[ClientRpc]
+	private void ApplyMotionClientRPC(Motion motion, float deltaTime)
+	{
+		ApplyMotion(motion, deltaTime);
+	}
 
 
 	private Combo FindAcceptebleCombo(Motion motion)

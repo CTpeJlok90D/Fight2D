@@ -35,7 +35,10 @@ public class Stamina : CharacterСharacteristic
 
     private void OnOut()
     {
-        _character.GiveStun(_staminaOutStunTime);
+        if (IsServer)
+        {
+            _character.GiveStun(_staminaOutStunTime);
+        }
     }
 
     private void RecoverValue()
