@@ -20,7 +20,7 @@ public class CharacterRespawner : NetworkBehaviour
 	{
 		_character.transform.position = _spawnpoint;
 		_health.Current = _health.Max;
-		_stamina.IsRecovering = false;
+		_stamina.IsRecovering = true;
 
         RespawnClientRpc();
 
@@ -30,5 +30,6 @@ public class CharacterRespawner : NetworkBehaviour
 	private void RespawnClientRpc()
 	{
         _character.transform.position = _spawnpoint;
+        _character.EnableControl();
     }
 }
