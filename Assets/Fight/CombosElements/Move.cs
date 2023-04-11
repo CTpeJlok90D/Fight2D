@@ -26,6 +26,7 @@ public class Move : ComboElement
 		info.Animator.SetInteger("MoveDirection", _moveDirection);
 	}
 
+#if UNITY_EDITOR
 	private void OnValidate()
 	{
 		if (_moveDirection > 0)
@@ -37,4 +38,5 @@ public class Move : ComboElement
 			_moveDirection = -1;
 		}
 	}
+#endif
 }

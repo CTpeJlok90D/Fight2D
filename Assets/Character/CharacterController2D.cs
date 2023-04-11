@@ -96,14 +96,14 @@ public class CharacterController2D : NetworkBehaviour
 	private void ApplyMotionServerRpc(Motion motion, float deltaTime) 
 	{
 		ApplyMotion(motion, deltaTime);
-		ApplyMotionClientRPC(motion, deltaTime);
+		//ApplyMotionClientRPC(motion, deltaTime);
     }
 
-	[ClientRpc]
-	private void ApplyMotionClientRPC(Motion motion, float deltaTime)
-	{
-		ApplyMotion(motion, deltaTime);
-	}
+	//[ClientRpc]
+	//private void ApplyMotionClientRPC(Motion motion, float deltaTime)
+	//{
+	//	ApplyMotion(motion, deltaTime);
+	//}
 
 
 	private Combo FindAcceptebleCombo(Motion motion)
